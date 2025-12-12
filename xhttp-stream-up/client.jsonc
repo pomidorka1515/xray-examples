@@ -48,7 +48,8 @@
         "2a02:6b8::feed:0ff",
         "2a02:6b8:0:1::feed:0ff"
       ],
-      "mamazaza.ru": "89.34.230.17"
+      // This line sometimes gets added automatically 
+      "your-domain.com": "ip"
     },
     "servers": [
       "2606:4700:4700::1111",
@@ -73,7 +74,7 @@
         "udp": true,
         "userLevel": 8
       },
-      "sniffing": {
+      "sniffing": { //Optional
         "destOverride": [
           "http",
           "tls"
@@ -89,7 +90,7 @@
   },
   "outbounds": [
     {
-      "mux": {
+      "mux": { // Not needed.
         "concurrency": -1,
         "enabled": false
       },
@@ -97,13 +98,13 @@
       "settings": {
         "vnext": [
           {
-            "address": "mamazaza.ru",
-            "port": 8443,
+            "address": "your-domain.com",
+            "port": 443,
             "users": [
               {
-                "encryption": "none",
-                "flow": "",
-                "id": "64e97c66-451e-4500-92d6-7cb0ca437718",
+                "encryption": "none", // Always none.
+                "flow": "", // Obviously, dont use vision
+                "id": "uuid",
                 "level": 8
               }
             ]
@@ -125,29 +126,29 @@
         "tlsSettings": {
           "allowInsecure": false,
           "alpn": [
-            "h2",
-            "http/1.1"
+            "h2"
           ],
-          "serverName": "mamazaza.ru",
+          "serverName": "your-domain.com",
           "show": false
         },
         "xhttpSettings": {
           "extra": {
             "Headers": {
+            //PSA: when you import a share link, sometimes an extra escape character gets added here "\", make sure to double check 
               "Content-Type": "application/grpc",
               "TE": "trailers",
               "User-Agent": "grpc-go/1.60.1",
               "grpc-timeout": "1000m",
               "grpc-encoding": "identity",
               "grpc-accept-encoding": "identity,deflate,gzip",
+             //Not relevant if commented out in nginx
               "grpc-accept-tokens": "d5966ad8d3fc53abcfedfa48c0371cee68727d05725c9c2ab5cba961ca94377d"
             },
-            "xPaddingBytes": "16-128",
-            "noGRPCHeader": false
+            "xPaddingBytes": "16-128" // Must be the same as server
           },
-          "host": "mamazaza.ru",
+          "host": "your-domain.com",
           "mode": "stream-up",
-          "path": "/6bf9268658c124fdb43ae4ed770cfd5993a094d7fee92158229bdfd979090521"
+          "path": "/your-secret-path"
         }
       },
       "tag": "proxy"
@@ -183,32 +184,16 @@
       "statsOutboundDownlink": true
     }
   },
-  "remarks": "#3 VLESS [XHttp] [TLS] [NGINX]-h5wuza6g",
+  "remarks": "test",
   "routing": {
     "domainStrategy": "AsIs",
     "rules": [
-      { 
+      { // SSH - direct
         "outboundTag": "direct",
         "port": "22",
         "type": "field"
       },
-      {
-        "domain": [
-          "geoip:ru"
-        ],
-        "network": "udp,tcp",
-        "outboundTag": "direct",
-        "port": "0-1024",
-        "type": "field"
-      },
-      {
-        "domain": [
-          "geosite:ru-available-only-inside"
-        ],
-        "outboundTag": "direct",
-        "type": "field"
-      },
-      {
+      { // Disable QUIC
         "network": "udp",
         "outboundTag": "block",
         "port": "443",
