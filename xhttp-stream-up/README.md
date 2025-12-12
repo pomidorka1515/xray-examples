@@ -1,0 +1,21 @@
+# VLESS + XHTTP + TLS (except it looks like gRPC!)
+
+As we all know, gRPC transport is really stealhy. 
+However, it's speeds suck, and the latency is insane.
+That's why we are going to use XHTTP, a much more flexible and customizable transport.
+
+# Requirements
+## Server
+- xray-core latest stable version (v25.1x)
+- optional but recommended, a panel for xray like 3x-ui and remnawave
+- nginx latest version (1.29)
+  - please note, apt package manager ships v1.24.x as latest version, make sure to change the repo to nginx`s one
+- a domain which you own
+  - it points to your vps ip adress
+- valid ssl certificates
+## Client 
+- a client which supports xhttp
+  - cant be based on mihomo or sing box, they don't support xhttp yet
+- latest xray-core (v25.1x)
+## Miscellaneous 
+- a working brain
