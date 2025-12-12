@@ -19,3 +19,15 @@ That's why we are going to use XHTTP, a much more flexible and customizable tran
 - latest xray-core (v25.1x)
 ## Miscellaneous 
 - a working brain
+# Why use this complex setup?
+- much more stable
+- higher speeds
+- better ping
+- no extra unnecessary libraries unlike gRPC
+- better support & isnt being deprecated
+
+# Files
+- nginx_config - your webservers config
+- client.json - client configuration
+- server.json - server configuration
+# To get into this, take a look at the files!
