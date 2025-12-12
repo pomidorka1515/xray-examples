@@ -1,0 +1,55 @@
+{
+      "listen": "127.0.0.1", //Make sure to listen on a local port, don't expose this to the internet.
+      "port": 2000,
+      "protocol": "vless",
+      "settings": {
+        "clients": [
+        //Clients go here 
+        ],
+        "decryption": "none",
+        "encryption": "none"
+      },
+      "sniffing": { //Optional
+        "destOverride": [
+          "http",
+          "tls",
+          "quic",
+          "fakedns"
+        ],
+        "enabled": false,
+        "metadataOnly": false,
+        "routeOnly": false
+      },
+      "streamSettings": {
+        "network": "xhttp", 
+        "security": "none", // As always.
+        "xhttpSettings": {
+          "headers": {
+            // Mimicry of gRPC.
+            // We copy+paste everything from the client configuration except our made up security header.
+            "Content-Type": "application/grpc", 
+            "TE": "trailers",
+            "User-Agent": "grpc-go/1.60.1",
+            "grpc-accept-encoding": "identity,deflate,gzip",
+            "grpc-encoding": "identity",
+            // Another layer of making sure our connection doesn't die.
+            "grpc-timeout": "1000m"
+          },
+          // Unlike gRPC+TLS, you need to enter your domain here. Don't leave this field blank.
+          "host": "your-domain.com",
+          "mode": "stream-up", // Perfect for faking gRPC
+          "noSSEHeader": true, // Since we inject our own Content-Type headers, this is useless and raises suspicions from firewalls
+          "path": "/your-secret-path",
+          "scStreamUpServerSecs": "16-32", // Only server
+          "xPaddingBytes": "16-32" // Client and server. MUST match on both sides, otherwise you will lag.
+          // Note about scStreamUpServerSecs, xPaddingBytes 
+          // These settings define how much garbage bytes xhttp is going to add to your packets.
+          // Too low = easy fingerprinting 
+          // Too high = more latency 
+          // Insanely high (>1000) = packet splitting = extreme latency and wasted bandwidth 
+          // Try to play around with these things, see which performs better.
+          // DO NOT set them to low/high values or static ones.
+        }
+      },
+      "tag": "test"
+    },
