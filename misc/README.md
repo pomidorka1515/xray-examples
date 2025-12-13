@@ -53,12 +53,13 @@ sudo apt install certbot
 ```
 ## Point your domain to your IP adress
 ### IPv4
-- in your registrar DNS settins, cludflare dns settings, etc: make an `A` record
+- in your registrar DNS settings, cludflare dns settings, etc: make an `A` record
 - set the value to your VPS ipv4 adress
 - if using cloudflare, dont set `Proxy through Cloudflare`
 ### IPv6
 - same as IPv4, but you need to create an `AAAA` record instead
 - and set the value to your VPS ipv6 adress
+- dont only set an `AAAA` record, this isnt a good practice
 ## Get the certificate
 ```bash
 sudo certbot certonly --standalone -d your-domain.com
@@ -71,3 +72,4 @@ sudo certbot certonly --standalone -d your-domain.com
 - your private key, however, isnt for everyone, **and you should NOT share it.** if someone obtains this, they can impersonate your website.
 - lets encrypt has a limit for issuing certificates, dont spam their servers if you dont want to get banned
 - use a valid email for creating an account
+- dont close port 80, 443 and 8443 - they are used to renew your certificates automatically
