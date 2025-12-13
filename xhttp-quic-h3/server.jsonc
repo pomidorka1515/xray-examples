@@ -1,0 +1,53 @@
+{
+      "listen": "127.0.0.1", //Make sure to listen on a local port, don't expose this to the internet.
+      "port": 2001,
+      "protocol": "vless",
+      "settings": {
+        "clients": [
+        //Clients go here 
+        ],
+        "decryption": "none",
+        "encryption": "none"
+      },
+      "sniffing": { //Optional
+        "destOverride": [
+          "http",
+          "tls",
+          "quic",
+          "fakedns"
+        ],
+        "enabled": false,
+        "metadataOnly": false,
+        "routeOnly": false
+      },
+      "streamSettings": {
+        "network": "xhttp", 
+        "security": "none", // NGINX already does tls for us.
+        "xhttpSettings": {
+          "headers": {
+            // Not needed
+          },
+          // Unlike gRPC+TLS, you need to enter your domain here. Don't leave this field blank.
+          "host": "your-domain.com",
+          // The modes i recommend trying:
+          // auto, stream-up, packet-up
+          // stream-one isnt really good
+          "mode": "stream-up",
+          "noSSEHeader": true, // Since we inject our own Content-Type headers, this is useless and raises suspicions from firewalls
+          "path": "/your-secret-path",
+          "scStreamUpServerSecs": "16-32", // stream-up, only server
+          "xPaddingBytes": "16-32" // Client and server. MUST match on both sides, otherwise you will lag.
+          "scMaxBufferedPosts": 30, // packet-up, only server
+          "scMaxEachPostBytes": "1000000", // packet-up, both client AND server, must match on both sides
+          // If you, for example, use stream-up and leave packet-up related settings nothing will happen, dont worry
+          // Note about scStreamUpServerSecs, xPaddingBytes 
+          // These settings define how much garbage bytes xhttp is going to add to your packets.
+          // Too low = easy fingerprinting 
+          // Too high = more latency 
+          // Insanely high (>1000) = packet splitting = extreme latency and wasted bandwidth 
+          // Try to play around with these things, see which performs better.
+          // DO NOT set them to low/high values or static ones.
+        }
+      },
+      "tag": "test"
+    },
