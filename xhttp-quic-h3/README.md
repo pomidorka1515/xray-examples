@@ -2,7 +2,7 @@
 
 # ⚠️ WARNING: DO NOT USE ON CELLULAR DATA.
 ## They throttle UDP heavily. Just don't, okay?
-
+## Also dont use this in Russia, Iran, etc. They throttle HTTP/3 too.
 # Perks
 - UDP based, less delay
 - if a packet gets lost, the whole stream isnt stalled
