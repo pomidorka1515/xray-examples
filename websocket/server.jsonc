@@ -1,0 +1,31 @@
+    {
+      "listen": "127.0.0.1", // Listen locally
+      "port": 2003,
+      "protocol": "vless",
+      "settings": {
+        "clients": [], // Your clients
+        "decryption": "none",
+        "encryption": "none"
+      },
+      "sniffing": {
+        "destOverride": [ // Recommended
+          "http",
+          "tls"
+        ],
+        "enabled": true,
+        "metadataOnly": false,
+        "routeOnly": false
+      },
+      "streamSettings": {
+        "network": "ws",
+        "security": "none", // NGINX handles tls
+        "wsSettings": {
+          "acceptProxyProtocol": false,
+          "headers": {},
+          "heartbeatPeriod": 0,
+          "host": "your-domain.com",
+          "path": "/your-secret-path"
+        }
+      },
+      "tag": "test"
+    },
