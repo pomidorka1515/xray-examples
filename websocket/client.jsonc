@@ -1,0 +1,143 @@
+{
+  "log": {
+    "loglevel": "warning"
+  },
+  "dns": {
+    "servers": [
+      {
+        "address": "127.0.0.1",
+        "domains": [
+          "your-domain.com"
+        ],
+        "skipFallback": true
+      },
+      "1.1.1.1"
+    ],
+    "tag": "dns-module"
+  },
+  "inbounds": [ // Not relevant
+    {
+      "tag": "socks",
+      "port": 10808,
+      "listen": "127.0.0.1",
+      "protocol": "mixed",
+      "sniffing": {
+        "enabled": false,
+        "routeOnly": false
+      },
+      "settings": {
+        "auth": "noauth",
+        "udp": true,
+        "allowTransparent": false
+      }
+    },
+    {
+      "tag": "api",
+      "port": 10812,
+      "listen": "127.0.0.1",
+      "protocol": "dokodemo-door",
+      "settings": {
+        "address": "127.0.0.1"
+      }
+    }
+  ],
+  "outbounds": [
+    {
+      "tag": "proxy",
+      "protocol": "vless",
+      "settings": {
+        "vnext": [
+          {
+            "address": "your-domain.com",
+            "port": 443,
+            "users": [
+              {
+              // Clients here...
+              }
+            ]
+          }
+        ]
+      },
+      "streamSettings": {
+        "network": "ws",
+        "security": "tls",
+        "tlsSettings": {
+          "allowInsecure": false,
+          "serverName": "your-domain.com",
+          "alpn": [
+            "http/1.1"
+          ],
+          "fingerprint": "safari"
+        },
+        "wsSettings": {
+          "path": "/your-secret-path",
+          "host": "your-domain.com",
+          "headers": {
+            "Host": "your-domain.com"
+          }
+        }
+      },
+      "mux": {
+        "enabled": false,
+        "concurrency": -1
+      }
+    },
+    {
+      "tag": "direct",
+      "protocol": "freedom",
+      "settings": {
+        "domainStrategy": "AsIs",
+        "userLevel": 0
+      }
+    },
+    {
+      "tag": "block",
+      "protocol": "blackhole"
+    }
+  ],
+  "routing": {
+    "domainStrategy": "IPIfNonMatch",
+    "rules": [
+      { // API
+        "type": "field",
+        "inboundTag": [
+          "api"
+        ],
+        "outboundTag": "api"
+      },
+      { // Proxy everything
+        "type": "field",
+        "port": "0-65535",
+        "outboundTag": "proxy"
+      },
+      { // SSH - direct
+        "type": "field",
+        "port": "22",
+        "outboundTag": "direct"
+      },
+      { // QUIC - disable
+        "type": "field",
+        "port": "443",
+        "network": "udp",
+        "outboundTag": "block"
+      },
+      {
+        "type": "field",
+        "inboundTag": [
+          "dns-module"
+        ],
+        "outboundTag": "proxy"
+      }
+    ]
+  },
+  "metrics": {
+    "tag": "api"
+  },
+  "policy": {
+    "system": {
+      "statsOutboundUplink": true,
+      "statsOutboundDownlink": true
+    }
+  },
+  "stats": {}
+}
