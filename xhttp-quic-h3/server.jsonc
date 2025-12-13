@@ -32,11 +32,11 @@
           // The modes i recommend trying:
           // auto, stream-up, packet-up
           // stream-one isnt really good
-          "mode": "stream-up",
-          "noSSEHeader": true, // Since we inject our own Content-Type headers, this is useless and raises suspicions from firewalls
+          "mode": "packet-up",
+          "noSSEHeader": false, // all modes, only server, recommend to keep as false
           "path": "/your-secret-path",
           "scStreamUpServerSecs": "16-32", // stream-up, only server
-          "xPaddingBytes": "16-32" // Client and server. MUST match on both sides, otherwise you will lag.
+          "xPaddingBytes": "16-32", // Client and server. MUST match on both sides, otherwise you will lag.
           "scMaxBufferedPosts": 30, // packet-up, only server
           "scMaxEachPostBytes": "1000000", // packet-up, both client AND server, must match on both sides
           // If you, for example, use stream-up and leave packet-up related settings nothing will happen, dont worry
