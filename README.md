@@ -4,4 +4,5 @@ this includes:
 - WebSocket + TLS
 - XHTTP over H3
 - XHTTP stream-up (gRPC-like)
+you can also find useful guides in the misc folder
 ## (HEAVY WIP!!)
