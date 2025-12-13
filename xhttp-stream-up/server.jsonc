@@ -22,7 +22,7 @@
       },
       "streamSettings": {
         "network": "xhttp", 
-        "security": "none", // As always.
+        "security": "none", // NGINX does tls here.
         "xhttpSettings": {
           "headers": {
             // Mimicry of gRPC.
