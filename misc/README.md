@@ -46,3 +46,28 @@ sudo apt update
 ```bash
 sudo apt install nginx
 ```
+# Get valid SSL certificates for TLS security
+## Install certbot
+```bash
+sudo apt install certbot
+```
+## Point your domain to your IP adress
+### IPv4
+- in your registrar DNS settins, cludflare dns settings, etc: make an `A` record
+- set the value to your VPS ipv4 adress
+- if using cloudflare, dont set `Proxy through Cloudflare`
+### IPv6
+- same as IPv4, but you need to create an `AAAA` record instead
+- and set the value to your VPS ipv6 adress
+## Get the certificate
+```bash
+sudo certbot certonly --standalone -d your-domain.com
+```
+## Files
+- public key: `/etc/letsencrypt/live/your-domain.com/fullchain.pem`
+- private key: `/etc/letsencrypt/live/your-domain.com/privkey.pem`
+## Important information
+- your public key is accessible to everyone, isnt a secret and safe to share *(even tho thats useless)*
+- your private key, however, isnt for everyone, **and you should NOT share it.** if someone obtains this, they can impersonate your website.
+- lets encrypt has a limit for issuing certificates, dont spam their servers if you dont want to get banned
+- use a valid email for creating an account
