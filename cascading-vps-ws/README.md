@@ -9,7 +9,7 @@
 - server 2 (exit node, for example Germany/Finland/Netherlands/etc.)
 - digital freedom!!!!
 ## scheme
-** you (client) -> _websocket+tls transmission_ -> server 1 -> _websocket+tls transmission_ -> server 2 (exit node) -> internet **
+you (client) -> _websocket+tls transmission_ -> server 1 -> _websocket+tls transmission_ -> server 2 (exit node) -> internet
 # why is it so effective?
 - most censors see constant foreign traffic (even if its valid TLS with real certificates) as "suspicious", you may experience throttling if set up incorrectly
 - the most fancy thing, **CIDR based censoring bypass**. yea you do need server 1 from allowed subnets, but still
