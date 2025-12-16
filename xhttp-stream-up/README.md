@@ -3,7 +3,8 @@
 As we all know, gRPC transport is really stealhy. 
 However, it's speeds suck, and the latency is insane.
 That's why we are going to use XHTTP, a much more flexible and customizable transport.
-
+## Little warning about upload speed
+We use XHTTP+Nginx, and gRPC isnt standard http/2: so, your upload speed will be slower. Not critical tho, download is fine. Check buffer settings for customisation.
 # Requirements
 ## Server
 - xray-core latest stable version (v25.1x)
