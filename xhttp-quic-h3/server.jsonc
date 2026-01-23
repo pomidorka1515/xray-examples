@@ -27,26 +27,31 @@
           "headers": {
             // Not needed
           },
-          // Unlike gRPC+TLS, you need to enter your domain here. Don't leave this field blank.
-          "host": "your-domain.com",
+          "host": "", // Leave this blank
           // The modes i recommend trying:
           // auto, stream-up, packet-up
           // stream-one isnt really good
           "mode": "packet-up",
           "noSSEHeader": false, // all modes, only server, recommend to keep as false
           "path": "/your-secret-path",
-          "scStreamUpServerSecs": "16-32", // stream-up, only server
-          "xPaddingBytes": "16-32", // Client and server. MUST match on both sides, otherwise you will lag.
+          "scStreamUpServerSecs": "80-160", // stream-up, only server
+          "xPaddingBytes": "256-512", // Client and server. MUST match on both sides, otherwise you will lag.
           "scMaxBufferedPosts": 30, // packet-up, only server
-          "scMaxEachPostBytes": "1000000", // packet-up, both client AND server, must match on both sides
+          "scMaxEachPostBytes": "750000-1000000", // packet-up, both client AND server, must match on both sides
           // If you, for example, use stream-up and leave packet-up related settings nothing will happen, dont worry
-          // Note about scStreamUpServerSecs, xPaddingBytes 
+          // Note about xPaddingBytes 
           // These settings define how much garbage bytes xhttp is going to add to your packets.
           // Too low = easy fingerprinting 
           // Too high = more latency 
           // Insanely high (>1000) = packet splitting = extreme latency and wasted bandwidth 
           // Try to play around with these things, see which performs better.
           // DO NOT set them to low/high values or static ones.
+          // scStreamUpServerSecs: an interval (in seconds) to define how long each stream lasts.
+          // After it ends, a new stream is created, and all new requests get sent to a new one.
+          // Helps bypass ISPs who kill long-lived connections.
+
+.
+
         }
       },
       "tag": "test"
